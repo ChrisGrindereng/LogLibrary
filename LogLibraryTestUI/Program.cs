@@ -1,6 +1,6 @@
 ﻿using LogLibrary;
 using System;
-
+using System.ComponentModel;
 
 namespace LogLibraryTestUI
 {
@@ -12,7 +12,27 @@ namespace LogLibraryTestUI
 
             Console.WriteLine("Hello World!");
 
-            logger.Log("Hello World!");
+            try
+            {
+                logger.Log("Hello World!");
+                throw new Exception("ERROR TESTING ERROR");
+            }
+            catch(Exception ex)
+            {
+                logger.Log("ERROR", ex);
+            }
+
+
+            try
+            {
+                logger.Log("Hello World!");
+                throw new WarningException("Warning Testing Warning");
+            }
+            catch (Exception ex)
+            {
+                logger.Log("Warning", ex);
+            }
+
         }
     }
 }
