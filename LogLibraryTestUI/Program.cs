@@ -26,7 +26,7 @@ namespace LogLibraryTestUI
             try
             {
                 logger.Log("Hello World!");
-                throw new WarningException("Warning Testing Warning");
+                throw new WarningException("Warning This works");
             }
             catch (Exception ex)
             {

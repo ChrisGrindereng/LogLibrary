@@ -7,30 +7,40 @@ namespace LogLibrary
 {
     public class Logger : ILogger
     {
-        public string FilePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location).ToString() + "\\log.txt";
+        public string FilePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location).ToString();
+
+        public LogType Type {get; set;}
 
         public void Log(string message)
         {
+            Type = LogType.Info;
             WriteToLog(message);
         }
 
         public void Log(string message, Exception ex)
         {
-            WriteToLog(message + "," + ex.Message);
+            if (ex is WarningException)
+            {
+                Type = LogType.Warning;
+                WriteToLog(message + "," + ex.Message);
+            }
+            else
+            {
+                Type = LogType.Debug;
+                WriteToLog(message + "," + ex.Message);
+            }
         }
 
-        public void Log(string message, WarningException ex)
-        {
-            WriteToLog(message + "," + ex.Message);
-        }
 
         public void WriteToLog(string message)
         {
-            using (StreamWriter streamWriter = File.AppendText(FilePath))
+            using (StreamWriter streamWriter = File.AppendText(FilePath + "//" + Type.ToString() + ".txt"))
             {
                 streamWriter.WriteLine(DateTime.Now.ToString() + "," + message);
                 streamWriter.Close();
             }
         }
+
+
     }
 }
